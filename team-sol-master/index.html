@@ -1,0 +1,1864 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+
+    <title>Team Sol Explorers x NASA Prototype</title>
+
+    <link
+      rel="apple-touch-icon"
+      sizes="180x180"
+      href="./apple-touch-icon.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="32x32"
+      href="./favicon-32x32.png"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      sizes="16x16"
+      href="./favicon-16x16.png"
+    />
+    <link rel="manifest" href="./site.webmanifest" />
+    <meta name="msapplication-TileColor" content="#2b5797" />
+    <meta name="theme-color" content="#262626" />
+
+    <!-- Bootstrap core CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl"
+      crossorigin="anonymous"
+    />
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"
+    />
+
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+      integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+      crossorigin=""
+    />
+    <link rel="stylesheet" href="css/MarkerCluster.css" />
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css" />
+    <link rel="stylesheet" href="css/Leaflet.GraphicScale.min.css" />
+    <link rel="stylesheet" href="css/popupMod.css" />
+    <link rel="stylesheet" href="css/easytimer.min.css" />
+    <link rel="stylesheet" href="css/draw-on-map.css" />
+    <link rel="stylesheet" href="css/Leaflet.Coordinates-0.1.5.css" />
+    <link rel="stylesheet" href="css/leaflet-compass.min.css" />
+    <link
+      rel="stylesheet"
+      href="https://rawgit.com/aratcliffe/Leaflet.contextmenu/master/dist/leaflet.contextmenu.css"
+    />
+    <link rel="stylesheet" href="css/L.Icon.Pulse.css" />
+    <link rel="stylesheet" href="css/L.Icon.FontAwesome.css" />
+
+    <script src="https://unpkg.com/phosphor-icons"></script>
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+
+    <!-- Custom styles for this template -->
+    <link href="css/main.css" rel="stylesheet" />
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-YTL0606KE3"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-YTL0606KE3");
+    </script>
+  </head>
+
+  <body class="holy-grail">
+    <header class="Nav">
+      <nav class="navbar navbar-dark" style="background-color: #262626">
+        <div class="container-fluid p-1">
+          <div
+            class="navbar-brand"
+            style="display: flex; flex-direction: row; align-items: center"
+          >
+            <img
+              class="mx-1"
+              src="assets/icons/team-sol-logo.svg"
+              height="18"
+              width="18"
+            />
+            <p class="my-0 mx-1">SOL 125</p>
+          </div>
+          <p class="my-0">
+            Tuesday, July 20 2021
+            <span class="mx-1" id="navBarTimer">09:00:00</span>
+          </p>
+          <p class="my-0 mx-4">EVA #3231</p>
+        </div>
+      </nav>
+    </header>
+
+    <div class="holy-grail-body">
+      <section class="mapContainer">
+        <div id="mapid"></div>
+      </section>
+      <div class="hg-sidebar sidebarContent">
+        <nav>
+          <div class="nav narbar-dark nav-tabs" id="nav-tab" role="tablist">
+            <button
+              class="nav-link active"
+              id="nav-home-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-home"
+              type="button"
+              role="tab"
+              aria-controls="nav-home"
+              aria-selected="true"
+            >
+              <span class="nestedTabTextStyle">
+                <i class="ph-book-open mx-2"></i>
+                Procedure
+              </span>
+            </button>
+            <button
+              class="nav-link"
+              id="nav-contact-tab"
+              data-bs-toggle="tab"
+              data-bs-target="#nav-contact"
+              type="button"
+              role="tab"
+              aria-controls="nav-contact"
+              aria-selected="false"
+            >
+              <span class="nestedTabTextStyle">
+                <i class="ph-map-pin-line mx-2"></i> Zones
+              </span>
+            </button>
+          </div>
+        </nav>
+        <div class="nestedTabs">
+          <div class="tab-content" id="nav-tabContent">
+            <div
+              class="tab-pane fade show active"
+              id="nav-home"
+              role="tabpanel"
+              aria-labelledby="nav-home-tab"
+            >
+              <div class="accordion accordion-flush" id="accordionFlushExample">
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingOne">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseOne"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseOne"
+                    >
+                      <div class="accordionLabel">
+                        <div>
+                          <h5>Task 1</h5>
+                          <p
+                            style="text-transform: uppercase; color: gray"
+                            class="my-0"
+                          >
+                            Zone A
+                          </p>
+                          <div id="task1Timer" class="timerHeader">
+                            <p class="my-0">
+                              PET Timer:
+                              <span class="task1TimerValues">00:00:00</span>
+                            </p>
+                          </div>
+                        </div>
+                        <span class="nestedTabTextStyle mx-2">
+                          <i class="ph-timer mx-2"></i> 30 min
+                        </span>
+                      </div>
+                    </button>
+                  </h2>
+                  <div
+                    id="flush-collapseOne"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div
+                      class="accordion-body"
+                      id="sortable"
+                      data-sortable-id="0"
+                      aria-dropeffect="move"
+                    >
+                      <div class="timerButtonContainer">
+                        <button
+                          type="button"
+                          class="btn btn-light startTask1Button"
+                        >
+                          Start
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary stopTask1Button"
+                        >
+                          End
+                        </button>
+                      </div>
+                      <ul class="procedure-step-list">
+                        <li class="my-2">
+                          <input type="checkbox" />
+                          <span class="editableStep">
+                            1.1. Confirm site location upon arrival.
+                          </span>
+                        </li>
+                        <li class="my-2">
+                          <input type="checkbox" name="triggerSite1" />
+                          <span class="editableStep">
+                            1.2. Collect soil auger, 3 sample bags, soil probe,
+                            soil core sampler, and 3 sampler syringes from the
+                            tool kit.
+                          </span>
+                        </li>
+                        <li class="my-2">
+                          <span class="editableStep"> 1.3. Sample Site 1 </span>
+                          <ul class="sub-task-list">
+                            <li class="my-2">
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.3.1. Travel to sample site 1.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.3.2. Use the soil auger to collect surface
+                                soil and transfer into the sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.3.3. Stow sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.3.4. Use the soil probe to remove 6 inches of
+                                soil.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.3.5. Load a sampler syringe into the soil core
+                                sampler.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.3.6. Use the soil core sampler to collect the
+                                sample from the probed hole.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" name="triggerSite2" />
+                              <span class="editableStep">
+                                1.3.7. Remove syringe from sampler and stow.
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="my-2">
+                          <span class="editableStep"> 1.4. Sample Site 2 </span>
+                          <ul class="sub-task-list">
+                            <li class="my-2">
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.4.1. Travel to sample site 2.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.4.2. Use the soil auger to collect surface
+                                soil and transfer into the sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.4.3. Stow sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.4.4. Use the soil probe to remove 12 inches of
+                                soil.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.4.5. Load a sampler syringe into the soil core
+                                sampler.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.4.6. Use the soil core sampler to collect the
+                                sample from the probed hole.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" name="triggerSite3" />
+                              <span class="editableStep">
+                                1.4.7. Remove syringe from sampler and stow.
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="my-2">
+                          <span class="editableStep"> 1.5. Sample Site 3 </span>
+                          <ul class="sub-task-list">
+                            <li class="my-2">
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.5.1. Travel to sample site 3.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.5.2. Use the soil auger to collect surface
+                                soil and transfer into the sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.5.3. Collect 3 basalt rocks approximately 2
+                                inches in diameter and transfer into the sample
+                                bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.5.4. Stow sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.5.5. Use the soil probe to remove 24 inches of
+                                soil.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.5.6. Load a sampler syringe into the soil core
+                                sampler.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.5.7. Use the soil core sampler to collect the
+                                sample from the probed hole.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.5.8. Remove syringe from sampler and stow.
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="my-2">
+                          <input type="checkbox" />
+                          <span class="editableStep">
+                            1.6. Return soil auger, soil probe, and soil core
+                            sampler to the tool kit.
+                          </span>
+                        </li>
+                        <li class="my-2">
+                          <input type="checkbox" name="task2Arrival" />
+                          <span class="editableStep">
+                            1.7. Place 3 sample bags and 3 sampler syringes into
+                            the collection box.
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingTwo">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseTwo"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseTwo"
+                    >
+                      <div class="accordionLabel">
+                        <div>
+                          <h5>Task 2</h5>
+                          <p
+                            style="text-transform: uppercase; color: gray"
+                            class="my-0"
+                          >
+                            Zone B
+                          </p>
+                          <div id="task2Timer" class="timerHeader">
+                            <p class="my-0">
+                              PET Timer:
+                              <span class="task2TimerValues">00:00:00</span>
+                            </p>
+                          </div>
+                        </div>
+                        <span class="nestedTabTextStyle mx-2">
+                          <i class="ph-timer mx-2"></i> 90 min
+                        </span>
+                      </div>
+                    </button>
+                  </h2>
+                  <div
+                    id="flush-collapseTwo"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="flush-headingTwo"
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="timerButtonContainer">
+                        <button
+                          type="button"
+                          class="btn btn-light startTask2Button"
+                        >
+                          Start
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary stopTask2Button"
+                        >
+                          End
+                        </button>
+                      </div>
+                      <ul class="procedure-step-list" id="task2List">
+                        <li class="my-2">
+                          <input type="checkbox" />
+                          <span class="editableStep">
+                            2.1. Confirm zone location upon arrival.
+                          </span>
+                        </li>
+                        <li class="my-2">
+                          <input type="checkbox" name="task2Site1" />
+                          <span class="editableStep">
+                            2.2. Collect camera A2 (macro), camera A3 (wide),
+                            and camera A6 (pan) from the tool kit.
+                          </span>
+                        </li>
+                        <li class="my-2">
+                          <span class="editableStep"> 2.3. Photo Site 1 </span>
+                          <ul class="sub-task-list">
+                            <li class="my-2">
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.3.1. Travel to photo site 1.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.3.2. Use camera A2 (macro) to photograph the
+                                ground from 3 feet above the surface.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.3.3. Use camera A3 (wide) to photograph the
+                                horizon 2 feet above the surface and directly
+                                North.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.3.4. Use camera A6 (pan) to photograph 360
+                                degrees, 4 feet above the surface.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" name="task2Site2" />
+                              <span class="editableStep">
+                                2.3.5. Tag the photo site at the EV's location
+                                for photo upload.
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="my-2">
+                          <span class="editableStep"> 2.4. Photo Site 2 </span>
+                          <ul class="sub-task-list">
+                            <li class="my-2">
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.4.1. Travel to photo site 2.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.4.2. Use camera A2 (macro) to photograph the
+                                ground from 3 feet above the surface.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.4.3. Use camera A3 (wide) to photograph the
+                                horizon 2 feet above the surface and directly
+                                South.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.4.4. Use camera A6 (pan) to photograph 360
+                                degrees, 4 feet above the surface.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" name="task2Site3" />
+                              <span class="editableStep">
+                                2.4.5. Tag the photo site at the EV's location
+                                for photo upload.
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="my-2">
+                          <span class="editableStep"> 2.5. Photo Site 3 </span>
+                          <ul class="sub-task-list">
+                            <li class="my-2">
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.5.1. Travel to photo site 3.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.5.2. Use camera A2 (macro) to photograph the
+                                ground from 3 feet above the surface.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.5.3. Use camera A3 (wide) to photograph the
+                                horizon 2 feet above the surface and directly
+                                West.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.5.4. Use camera A6 (pan) to photograph 360
+                                degrees, 4 feet above the surface.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                2.5.5. Tag the photo site at the EV's location
+                                for photo upload.
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="my-2">
+                          <input type="checkbox" />
+                          <span class="editableStep">
+                            2.6. Report recon information through tagging.
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="flush-headingThree">
+                    <button
+                      class="accordion-button collapsed"
+                      type="button"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#flush-collapseThree"
+                      aria-expanded="false"
+                      aria-controls="flush-collapseThree"
+                    >
+                      <div class="accordionLabel">
+                        <div>
+                          <h5>Task 3</h5>
+                          <p
+                            style="text-transform: uppercase; color: gray"
+                            class="my-0"
+                          >
+                            Zone C
+                          </p>
+                          <div id="task3Timer" class="timerHeader">
+                            <p class="my-0">
+                              PET Timer:
+                              <span class="task3TimerValues">00:00:00</span>
+                            </p>
+                          </div>
+                        </div>
+                        <span class="nestedTabTextStyle mx-2">
+                          <i class="ph-timer mx-2"></i> 60 min
+                        </span>
+                      </div>
+                    </button>
+                  </h2>
+                  <div
+                    id="flush-collapseThree"
+                    class="accordion-collapse collapse"
+                    aria-labelledby="flush-headingThree"
+                    data-bs-parent="#accordionFlushExample"
+                  >
+                    <div class="accordion-body">
+                      <div class="timerButtonContainer">
+                        <button
+                          type="button"
+                          class="btn btn-light startTask3Button"
+                        >
+                          Start
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary stopTask3Button"
+                        >
+                          End
+                        </button>
+                      </div>
+
+                      <ul class="procedure-step-list">
+                        <li class="my-2">
+                          <input type="checkbox" />
+                          <span class="editableStep">
+                            3.1. Confirm site location upon arrival.
+                          </span>
+                        </li>
+                        <li class="my-2">
+                          <input type="checkbox" name="triggerSite1" />
+                          <span class="editableStep">
+                            3.2. Collect soil auger, 3 sample bags, soil probe,
+                            soil core sampler, and 3 sampler syringes from the
+                            tool kit.
+                          </span>
+                        </li>
+                        <li class="my-2">
+                          <span class="editableStep"> 3.3. Sample Site 1 </span>
+                          <ul class="sub-task-list">
+                            <li class="my-2">
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.3.1. Travel to sample site 1.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.3.2. Use the soil auger to collect surface
+                                soil and transfer into the sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.3.3. Stow sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.3.4. Use the soil probe to remove 6 inches of
+                                soil.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.3.5. Load a sampler syringe into the soil core
+                                sampler.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.3.6. Use the soil core sampler to collect the
+                                sample from the probed hole.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" name="triggerSite2" />
+                              <span class="editableStep">
+                                3.3.7. Remove syringe from sampler and stow.
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="my-2">
+                          <span class="editableStep"> 3.4. Sample Site 2 </span>
+                          <ul class="sub-task-list">
+                            <li class="my-2">
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.4.1. Travel to sample site 2.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                1.4.2. Use the soil auger to collect surface
+                                soil and transfer into the sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.4.3. Stow sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.4.4. Use the soil probe to remove 12 inches of
+                                soil.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.4.5. Load a sampler syringe into the soil core
+                                sampler.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.4.6. Use the soil core sampler to collect the
+                                sample from the probed hole.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" name="triggerSite3" />
+                              <span class="editableStep">
+                                3.4.7. Remove syringe from sampler and stow.
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="my-2">
+                          <input type="checkbox" />
+                          <ul class="sub-task-list">
+                            <li class="my-2">
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.5.1. Travel to sample site 3.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.5.2. Use the soil auger to collect surface
+                                soil and transfer into the sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.5.3. Collect 3 basalt rocks approximately 2
+                                inches in diameter and transfer into the sample
+                                bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.5.4. Stow sample bag.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.5.5. Use the soil probe to remove 24 inches of
+                                soil.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.5.6. Load a sampler syringe into the soil core
+                                sampler.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.5.7. Use the soil core sampler to collect the
+                                sample from the probed hole.
+                              </span>
+                            </li>
+                            <li>
+                              <input type="checkbox" />
+                              <span class="editableStep">
+                                3.5.8. Remove syringe from sampler and stow.
+                              </span>
+                            </li>
+                          </ul>
+                        </li>
+                        <li class="my-2">
+                          <input type="checkbox" />
+                          <span class="editableStep">
+                            3.6. Return soil auger, soil probe, and soil core
+                            sampler to the tool kit.
+                          </span>
+                        </li>
+                        <li class="my-2">
+                          <input type="checkbox" name="task2Arrival" />
+                          <span class="editableStep">
+                            3.7. Place 3 sample bags and 3 sampler syringes into
+                            the collection box.
+                          </span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="tab-pane fade"
+              id="nav-contact"
+              role="tabpanel"
+              aria-labelledby="nav-contact-tab"
+            >
+              <div class="accordion-body-zones">
+                <div class="accordionLabel">
+                  <div>
+                    <h5>Zone A</h5>
+                    <p
+                      style="text-transform: uppercase; color: gray"
+                      class="my-0"
+                    >
+                      Task 1
+                    </p>
+                    <div id="task1Timer" class="timerHeader">
+                      <p class="my-0">
+                        PET Timer:
+                        <span class="task1TimerValues">00:00:00</span>
+                      </p>
+                    </div>
+                  </div>
+                  <span class="nestedTabTextStyle mx-2">
+                    <i class="ph-timer mx-2"></i> 30 min
+                  </span>
+                </div>
+                <h5 class="my-2">Goals</h5>
+                <ul class="goals-step-list">
+                  <li class="my-2">
+                    <input type="checkbox" />
+                    <span class="editableStep">
+                      Collect surface soil from 3 different locations
+                    </span>
+                  </li>
+                  <li class="my-2">
+                    <input type="checkbox" />
+                    <span class="editableStep">
+                      Collect a core sample from 3 different locations
+                    </span>
+                  </li>
+                  <li class="my-2">
+                    <input type="checkbox" />
+                    <span class="editableStep"> Collect 3 basalt rocks </span>
+                  </li>
+                </ul>
+
+                <hr />
+                <div class="accordionLabel">
+                  <div>
+                    <h5>Zone B</h5>
+                    <p
+                      style="text-transform: uppercase; color: gray"
+                      class="my-0"
+                    >
+                      Task 2
+                    </p>
+                    <div id="task2Timer" class="timerHeader">
+                      <p class="my-0">
+                        PET Timer:
+                        <span class="task2TimerValues">00:00:00</span>
+                      </p>
+                    </div>
+                  </div>
+                  <span class="nestedTabTextStyle mx-2">
+                    <i class="ph-timer mx-2"></i> 90 min
+                  </span>
+                </div>
+                <h5 class="my-2">Goals</h5>
+                <ul class="goals-step-list">
+                  <li class="my-2">
+                    <input type="checkbox" />
+                    <span class="editableStep"> Take 3 macro photographs </span>
+                  </li>
+                  <li class="my-2">
+                    <input type="checkbox" />
+                    <span class="editableStep">
+                      Take 3 wide angle photographs
+                    </span>
+                  </li>
+                  <li class="my-2">
+                    <input type="checkbox" />
+                    <span class="editableStep">
+                      Take 3 panoramic photographs
+                    </span>
+                  </li>
+                </ul>
+
+                <hr />
+                <div class="accordionLabel">
+                  <div>
+                    <h5>Zone C</h5>
+                    <p
+                      style="text-transform: uppercase; color: gray"
+                      class="my-0"
+                    >
+                      Task 3
+                    </p>
+                    <div id="task3Timer" class="timerHeader">
+                      <p class="my-0">
+                        PET Timer:
+                        <span class="task3TimerValues">00:00:00</span>
+                      </p>
+                    </div>
+                  </div>
+                  <span class="nestedTabTextStyle mx-2">
+                    <i class="ph-timer mx-2"></i> 60 min
+                  </span>
+                </div>
+                <h5 class="my-2">Goals</h5>
+                <ul class="goals-step-list">
+                  <li class="my-2">
+                    <input type="checkbox" />
+                    <span class="editableStep">
+                      Collect surface soil from 3 different locations
+                    </span>
+                  </li>
+                  <li class="my-2">
+                    <input type="checkbox" />
+                    <span class="editableStep">
+                      Collect a core sample from 3 different locations
+                    </span>
+                  </li>
+                  <li class="my-2">
+                    <input type="checkbox" />
+                    <span class="editableStep"> Collect 3 basalt rocks </span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="consumables">
+          <div class="consumableCard">
+            <h5 id="timeRemaining">01:34:23</h5>
+            <p>Time Remaining</p>
+          </div>
+          <div class="consumableCard">
+            <h5 id="timeElapsed">01:12:54</h5>
+            <p>Elapsed Time</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript -->
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-b5kHyXgcpbZJO/tY9Ul7kGkf1S0CWuKcCD38l8YkeH8z8QjE0GmW1gYU5S9FOnJ0"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+      integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+      crossorigin=""
+    ></script>
+    <script src="https://unpkg.com/leaflet.marker.slideto@0.2.0/Leaflet.Marker.SlideTo.js"></script>
+    <script src="js/Leaflet.GraphicScale.min.js"></script>
+    <script src="js/leaflet-compass.min.js"></script>
+    <!-- <script src="js/leaflet.motion.min.js"></script>
+    <script src="js/AnimatedMarker.js"></script> -->
+    <script src="js/leaflet.markercluster.js"></script>
+    <script src="js/leaflet.markercluster.js.map"></script>
+    <script src="js/popupMod.js" type="text/javascript"></script>
+    <script src="js/draw-on-map.min.js"></script>
+    <script src="js/Leaflet.Coordinates-0.1.5.min.js"></script>
+    <script src="https://rawgit.com/aratcliffe/Leaflet.contextmenu/master/dist/leaflet.contextmenu.js"></script>
+    <script src="js/L.Icon.Pulse.js"></script>
+    <script
+      src="https://kit.fontawesome.com/b41bf0afa7.js"
+      crossorigin="anonymous"
+    ></script>
+    <script src="js/L.Icon.FontAwesome.js"></script>
+    <script src="js/easytimer.min.js"></script>
+    <script src="js/domEdit.js"></script>
+    <script src="js/map_data.js"></script>
+
+    <!-- Menu Toggle Script -->
+    <script>
+      // Running Time Remaining
+      var countDownDate = new Date().getTime() + 3 * 60 * 60 * 1000;
+      var timeClear = setInterval(function () {
+        var now = new Date().getTime();
+        var timeLeft = countDownDate - now;
+        var hours = Math.floor(
+          (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        ).toLocaleString("en-US", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        });
+        var minutes = Math.floor(
+          (timeLeft % (1000 * 60 * 60)) / (1000 * 60)
+        ).toLocaleString("en-US", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        });
+        var seconds = Math.floor(
+          (timeLeft % (1000 * 60)) / 1000
+        ).toLocaleString("en-US", {
+          minimumIntegerDigits: 2,
+          useGrouping: false,
+        });
+        document.querySelector("#timeRemaining").innerHTML =
+          hours + ":" + minutes + ":" + seconds;
+        if (timeLeft < 0) {
+          clearInterval(timeClear);
+          document.querySelector("#timeRemaining").innerHTML = "00:00:00";
+        }
+      }, 1000);
+
+      var timeElapsed = new easytimer.Timer();
+
+      timeElapsed.start({ precision: "seconds", startValues: { minutes: 20 } });
+
+      timeElapsed.addEventListener("secondsUpdated", function (e) {
+        $("#timeElapsed").html(timeElapsed.getTimeValues().toString());
+      });
+
+      timeElapsed.addEventListener("started", function (e) {
+        $("#timeElapsed").html(timeElapsed.getTimeValues().toString());
+      });
+
+      // PET Timers
+      var task1Timer = new easytimer.Timer();
+      var startTask1Button = document.querySelector(".startTask1Button");
+      var stopTask1Button = document.querySelector(".stopTask1Button");
+      var startTask2Button = document.querySelector(".startTask2Button");
+      var stopTask2Button = document.querySelector(".stopTask2Button");
+      var startTask3Button = document.querySelector(".startTask3Button");
+      var stopTask3Button = document.querySelector(".stopTask3Button");
+
+      $(".startTask1Button").click(function () {
+        task1Timer.start();
+        startTask1Button.classList.remove("btn-light");
+        startTask1Button.classList.add("btn-success");
+        startTask1Button.textContent = "In Progress";
+      });
+
+      $(".stopTask1Button").click(function () {
+        task1Timer.stop();
+        stopTask1Button.textContent = "Task Finished";
+        stopTask1Button.style.width = "100%";
+        startTask1Button.remove();
+      });
+
+      task1Timer.addEventListener("secondsUpdated", function (e) {
+        $("#task1Timer .task1TimerValues").html(
+          task1Timer.getTimeValues().toString()
+        );
+      });
+
+      task1Timer.addEventListener("started", function (e) {
+        $("#task1Timer .task1TimerValues").html(
+          task1Timer.getTimeValues().toString()
+        );
+      });
+
+      var task2Timer = new easytimer.Timer();
+
+      $(".startTask2Button").click(function () {
+        task2Timer.start();
+        startTask2Button.classList.remove("btn-light");
+        startTask2Button.classList.add("btn-success");
+        startTask2Button.textContent = "In Progress";
+      });
+
+      $(".stopTask2Button").click(function () {
+        task2Timer.stop();
+        stopTask2Button.textContent = "Task Finished";
+        stopTask2Button.style.width = "100%";
+        startTask2Button.remove();
+      });
+
+      task2Timer.addEventListener("secondsUpdated", function (e) {
+        $("#task2Timer .task2TimerValues").html(
+          task2Timer.getTimeValues().toString()
+        );
+      });
+
+      task2Timer.addEventListener("started", function (e) {
+        $("#task2Timer .task2TimerValues").html(
+          task2Timer.getTimeValues().toString()
+        );
+      });
+
+      var task3Timer = new easytimer.Timer();
+
+      $(".startTask3Button").click(function () {
+        task3Timer.start();
+        startTask3Button.classList.remove("btn-light");
+        startTask3Button.classList.add("btn-success");
+        startTask3Button.textContent = "In Progress";
+      });
+
+      $(".stopTask3Button").click(function () {
+        task3Timer.stop();
+        stopTask3Button.textContent = "Task Finished";
+        stopTask3Button.style.width = "100%";
+        startTask3Button.remove();
+      });
+
+      task3Timer.addEventListener("secondsUpdated", function (e) {
+        $("#task3Timer .task3TimerValues").html(
+          task3Timer.getTimeValues().toString()
+        );
+      });
+
+      task3Timer.addEventListener("started", function (e) {
+        $("#task3Timer .task3TimerValues").html(
+          task3Timer.getTimeValues().toString()
+        );
+      });
+
+      // Nav Bar Date Time
+      var navBarTimer = new easytimer.Timer();
+      navBarTimer.start({ precision: "seconds", startValues: { hours: 9 } });
+
+      navBarTimer.addEventListener("secondsUpdated", function (e) {
+        $("#navBarTimer").html(navBarTimer.getTimeValues().toString());
+      });
+
+      navBarTimer.addEventListener("started", function (e) {
+        $("#navBarTimer").html(navBarTimer.getTimeValues().toString());
+      });
+
+      // Editable Steps
+
+      // $(".editableStep").domEdit({
+      //   editorClass: "editableStep",
+      //   onSetEditorStyle: function ($editor, $editingElement) {
+      //     $editor.css("color", "#fff");
+      //     $editor.css("background-color", "#525252");
+      //     $editor.css("border-style", "dotted");
+      //     $editor.css("border-bottom-width", "1px");
+      //     $editor.css("border-color", "#B1B1B1");
+      //     $editor.css("width", "300px");
+      //     $editor.css("height", "50px");
+      //     $editor.css("outline", "none");
+      //   },
+      // });
+
+      // Drag and Drop Steps
+      // $(function () {
+      //   $("#sortable").sortable();
+      //   $("#sortable").disableSelection();
+      // });
+
+      // Map JS
+
+      var mymap,
+        evLocation = [-12.802112, -141.679669];
+
+      var yellowCircleMarker = L.icon({
+        iconUrl: "./assets/icons/YellowCircle.svg",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -10],
+      });
+
+      var yellowSquareMarker = L.icon({
+        iconUrl: "./assets/icons/YellowSquare.svg",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -10],
+      });
+
+      var blueSquareMarker = L.icon({
+        iconUrl: "./assets/icons/BlueSquareMarker.svg",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -10],
+      });
+
+      var blueSquareMarker = L.icon({
+        iconUrl: "./assets/icons/BlueSquareMarker.svg",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -10],
+      });
+
+      var poiIcon = L.icon({
+        iconUrl: "./assets/icons/POIMarker.svg",
+        iconSize: [32, 32],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -10],
+      });
+
+      var habitatIcon = L.icon({
+        iconUrl: "./assets/icons/habitat.svg",
+        iconSize: [42, 42],
+        iconAnchor: [16, 16],
+        popupAnchor: [0, -10],
+      });
+
+      function centerMap(e) {
+        mymap.panTo(e.latlng);
+      }
+
+      function zoomIn(e) {
+        mymap.zoomIn();
+      }
+
+      function zoomOut(e) {
+        mymap.zoomOut();
+      }
+
+      function tagLocation(e) {
+        var taggedLocation = L.marker(e.latlng, {
+          icon: yellowSquareMarker,
+          setZIndexOffset: 10,
+        }).addTo(mymap);
+        taggedLocation
+          .bindPopup(
+            "<p>[" +
+              e.latlng.lng.toPrecision(7) +
+              ", " +
+              e.latlng.lat.toPrecision(7) +
+              "]: </p>",
+            { removable: true, editable: true }
+          )
+          .openPopup();
+      }
+
+      function tagPhoto(e) {
+        var taggedPhoto = L.marker(e.latlng, {
+          icon: blueSquareMarker,
+          setZIndexOffset: 10,
+        }).addTo(mymap);
+
+        taggedPhoto
+          .bindPopup(
+            "<div> <img src='./assets/photo-grid.png' height='150' width='150' style='margin-bottom: 8px' /> <br/> [" +
+              e.latlng.lng.toPrecision(7) +
+              ", " +
+              e.latlng.lat.toPrecision(7) +
+              "]: </div>",
+            { removable: true, editable: true }
+          )
+          .openPopup();
+      }
+
+      mymap = L.map("mapid", {
+        minZoom: 3,
+        maxZoom: 8,
+        contextmenu: true,
+        contextmenuWidth: 160,
+        contextmenuItems: [
+          // {
+          //   text: "Move EV Marker",
+          //   icon: "assets/icons/navigation-arrow.png",
+          //   callback: handleEVMarkerMove,
+          // },
+          {
+            text: "Tag as soil sample site",
+            icon: "assets/icons/note.png",
+            callback: tagLocation,
+          },
+          {
+            text: "Tag as photo site",
+            icon: "assets/icons/photo.png",
+            callback: tagPhoto,
+          },
+        ],
+      }).setView(evLocation, 5);
+
+      var pulsingIcon = L.icon.pulse({
+        iconSize: [20, 20],
+        color: "#F8E71C",
+        fillColor: "#F8E71C",
+      });
+
+      var markerPulse = L.marker([-7.258252, -132.954745], {
+        icon: pulsingIcon,
+        setZIndexOffset: 1000,
+      }).addTo(mymap);
+
+      markerPulse.bindTooltip(
+        "<div> <h6 style='margin-bottom: 4px;'>EV Location</h6> [" +
+          markerPulse._latlng.lat +
+          "," +
+          markerPulse._latlng.lng +
+          "] </div>",
+        {
+          offset: [5, 0],
+          className: "tooltipClass",
+        }
+      );
+
+      var habitatMarker = L.marker([-14.089349, -142.878465], {
+        icon: habitatIcon,
+      }).addTo(mymap);
+
+      habitatMarker.bindTooltip("IV Habitat", {
+        offset: [30, 0],
+        className: "tooltipClass",
+      });
+
+      // add leaflet-geoman controls with some options to the map
+      mymap.pm.addControls({
+        position: "topleft",
+        drawMarker: false,
+        drawCircleMarker: false,
+        drawRectangle: false,
+        cutPolygon: false,
+        splitMode: false,
+        oneBlock: true,
+        pinningOption: false,
+        snappingOption: false,
+        optionsControls: false,
+      });
+
+      var marsLabeledMapLayer = L.tileLayer(
+        // "https://mars.nasa.gov/mmgis-maps/M20/Layers/Jezero_Balanced_Visible_HiRISE_HRSCcolor_IHS_pansharp/{z}/{x}/{y}.png",
+        "https://cartocdn-gusc.global.ssl.fastly.net/opmbuilder/api/v1/map/named/opm-mars-basemap-v0-2/all/{z}/{x}/{y}.png",
+        {
+          attribution:
+            'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+          zoom: 3,
+          tms: false,
+        }
+      )
+        .addTo(mymap)
+        .setZIndex(0);
+
+      var marsShaded = L.tileLayer(
+        "http://s3-eu-west-1.amazonaws.com/whereonmars.cartodb.net/celestia_mars-shaded-16k_global/{z}/{x}/{y}.png",
+        {
+          zoom: 3,
+          tms: true,
+        }
+      );
+
+      var marsMOLA = L.tileLayer(
+        "http://s3-eu-west-1.amazonaws.com/whereonmars.cartodb.net/mola-color/{z}/{x}/{y}.png",
+        {
+          zoom: 3,
+          tms: true,
+        }
+      );
+
+      var marsVikingLayer = L.tileLayer(
+        "http://s3-eu-west-1.amazonaws.com/whereonmars.cartodb.net/viking_mdim21_global/{z}/{x}/{y}.png",
+        {
+          zoom: 3,
+          tms: true,
+        }
+      );
+
+      var marsGrayscale = L.tileLayer(
+        "http://s3-eu-west-1.amazonaws.com/whereonmars.cartodb.net/mola-gray/{z}/{x}/{y}.png",
+        {
+          zoom: 3,
+          tms: true,
+        }
+      );
+
+      var marsHillshade = L.tileLayer(
+        "https://s3.us-east-2.amazonaws.com/opmmarstiles/hillshade-tiles/{z}/{x}/{y}.png",
+        {
+          zoom: 3,
+          tms: true,
+        }
+      );
+
+      var latlngs = [
+        // [-7.724944, -133.541337],
+        [-7.258252, -132.954745],
+        // [-10.663583, -128.34009]
+      ];
+
+      // var polyline = L.motion
+      //   .polyline(
+      //     latlngs,
+      //     {
+      //       color: "white",
+      //       dashArray: 8,
+      //       weight: 1,
+      //     },
+      //     {
+      //       auto: true,
+      //       duration: 7500,
+      //       easing: L.Motion.Ease.easeInOutQuart,
+      //     },
+      //     {
+      //       showMarker: true,
+      //       icon: pulsingIcon,
+      //     }
+      //   )
+      //   .addTo(mymap);
+
+      var polyline = L.polyline(latlngs, {
+        color: "white",
+        // dashArray: 8,
+        weight: 4,
+      }).addTo(mymap);
+
+      function onEachFeature(feature, layer) {
+        // console.log({ feature, layer });
+        var popupContent = "<p>[" + feature.geometry.coordinates + "]:</p>";
+
+        if (feature.properties && feature.properties.popupContent) {
+          popupContent += feature.properties.popupContent;
+        }
+
+        layer.bindPopup(popupContent, { removable: true, editable: true });
+      }
+
+      function onEachZoneFeature(feature, layer) {
+        // console.log({ feature, layer });
+        var popupContent =
+          "<div style='height: 50px; display: flex; flex-direction: column; justify-content: space-around;'>" +
+          "<h6 style='margin-bottom: 8px; font-weight: 600;'>" +
+          feature.properties.name +
+          "</h6> <span>" +
+          feature.properties.timing +
+          "</span> <span style='color: #31b14d; margin-top: 4px;'>ETA: " +
+          feature.properties.eta +
+          "</span></div>";
+
+        layer.bindPopup(popupContent);
+      }
+
+      function onEachNoGoZoneFeature(feature, layer) {
+        // console.log({ feature, layer });
+        var popupContent =
+          "<div style='display: flex; flex-direction: column; justify-content: space-around;'>" +
+          "<h6 style='margin-bottom: 8px'>" +
+          feature.properties.name +
+          "</h6>" +
+          "<span style='color: rgba(231, 24, 24, 1); margin-top: 4px; font-weight: 600'>" +
+          feature.properties.reason +
+          "</span></div>";
+
+        layer.bindPopup(popupContent, { editable: true });
+      }
+
+      var goZoneStyle = {
+        // fillColor: 'rgba(49, 177, 77, 1)',
+        color: "rgba(49, 177, 77, 1)",
+        weight: 5,
+      };
+
+      var goZoneLayer = L.geoJSON(
+        { features: [GoZones] },
+        {
+          style: goZoneStyle,
+          onEachFeature: onEachZoneFeature,
+        }
+      ).addTo(mymap);
+
+      var noGoZoneStyle = {
+        fillColor: "rgba(231, 24, 24, 0.8)",
+        color: "rgba(231, 24, 24, 1)",
+        weight: 2,
+      };
+
+      var noGoZoneLayer = L.markerClusterGroup();
+
+      var noGoLayer = L.geoJSON(
+        { features: [NoGoZones2] },
+        {
+          style: noGoZoneStyle,
+          onEachFeature: onEachNoGoZoneFeature,
+        }
+      ).addTo(mymap);
+
+      // var markerLayers = L.markerClusterGroup({});
+
+      // var markerLayer = L.geoJSON(
+      //   { features: [markerLabels] },
+      //   {
+      //     onEachFeature: onEachFeature,
+      //     pointToLayer: function (feature, latlng) {
+      //       return markerLayers.addLayer(
+      //         L.marker(latlng, {
+      //           icon:
+      //             feature.properties.type === "ev"
+      //               ? yellowCircleMarker
+      //               : yellowSquareMarker,
+      //         })
+      //       );
+      //     },
+      //   }
+      // ).addTo(mymap);
+      // controlLayers.addOverlay(markerLayer, "Markers");
+
+      var plannedWaypointLineStyle = {
+        color: "#333",
+        dashArray: 6,
+        weight: 2,
+      };
+
+      var plannedWaypoints = L.geoJSON(
+        { features: [plannedWaypoints] },
+        {
+          setZIndexOffset: 5,
+          style: plannedWaypointLineStyle,
+        }
+      ).addTo(mymap);
+
+      var actualWaypointLineStyle = {
+        color: "white",
+        // dashArray: 4,
+        weight: 3,
+      };
+
+      // var actualWaypoints = L.geoJSON(
+      //   { features: [actualWaypoints] },
+      //   {
+      //     style: actualWaypointLineStyle,
+      //   }
+      // ).addTo(mymap);
+
+      function handleEVMarkerMove(latlng, duration = 10000) {
+        markerPulse.slideTo(latlng, {
+          duration: duration,
+          keepAtCenter: false,
+        });
+        markerPulse.setTooltipContent(
+          "<div> <h6 style='margin-bottom: 4px;'>EV Location</h6> [" +
+            latlng[0] +
+            "," +
+            latlng[1] +
+            "] </div>"
+        );
+        polyline.addLatLng(latlng);
+      }
+
+      // function onMapClick(e) {
+      //   console.log(e.latlng.toString());
+      // }
+
+      // mymap.on("click", onMapClick);
+
+      var graphicScale = L.control.graphicScale({ fill: "fill" }).addTo(mymap);
+
+      var baseMaps = {
+        "Label Map": marsLabeledMapLayer,
+        "Shaded Map": marsShaded,
+        "Color Coded MOLA Elevation Map": marsMOLA,
+        "Viking Map": marsVikingLayer,
+        "Greyscale Map": marsGrayscale,
+        "Hillshade Map": marsHillshade,
+      };
+
+      var overlayMaps = {
+        "Go Zones": goZoneLayer,
+        "No Go Zones": noGoLayer,
+        // Markers: markerLayers,
+        "Actual Waypoints": polyline,
+        "Planned Waypoints": plannedWaypoints,
+      };
+
+      L.control.layers(baseMaps, overlayMaps).addTo(mymap);
+
+      mymap.pm.setGlobalOptions({
+        enableDraw: {
+          markerStyle: {
+            icon: yellowSquareMarker,
+          },
+        },
+        templineStyle: { color: "#333", dashArray: 6 },
+        hintlineStyle: { color: "#333", dashArray: 6 },
+      });
+
+      mymap.pm.setPathOptions({
+        color: "rgba(49, 177, 77, 1)",
+        weight: 5,
+      });
+
+      mymap.on("pm:create", (e) => {
+        if (e.shape === "Marker") {
+          e.marker
+            .bindPopup(
+              "<p>[" +
+                e.marker._latlng.lng.toPrecision(5) +
+                ", " +
+                e.marker._latlng.lat.toPrecision(5) +
+                "]: </p>",
+              { removable: true, editable: true }
+            )
+            .openPopup();
+        }
+      });
+
+      window.addEventListener("beforeunload", function (ev) {
+        return (ev.returnValue = "Are you sure you want to refresh this page?");
+      });
+
+      // var ZoomViewer = L.Control.extend({
+      //   onAdd: function () {
+      //     var container = L.DomUtil.create("div");
+      //     var gauge = L.DomUtil.create("div");
+      //     container.style.width = "200px";
+      //     container.style.background = "rgba(255,255,255,0.5)";
+      //     container.style.textAlign = "left";
+      //     mymap.on("zoomstart zoom zoomend", function (ev) {
+      //       gauge.innerHTML = "Zoom level: " + mymap.getZoom();
+      //     });
+      //     container.appendChild(gauge);
+
+      //     return container;
+      //   },
+      // });
+
+      // new ZoomViewer().addTo(mymap);
+
+      mymap.pm.setGlobalOptions({
+        measurements: { measurement: true, displayFormat: "imperial" },
+      });
+
+      // Task 2 New Waypoint
+      var alternateWaypointMarker = L.marker([-8.101552, -114.149182], {
+        icon: poiIcon,
+        setZIndexOffset: 10,
+      }).addTo(mymap);
+
+      alternateWaypointMarker.bindPopup(
+        "<div style='width: 200px;'> <h6 style='margin-bottom: 4px;'>Point of Interest: Potential interesting rock formation</h6> <button class='btn btn-primary' type='button' onclick='addWaypointToPath()' height='25' width='100'>Add to EVA</button></div>",
+        {}
+      );
+
+      function addWaypointToPath() {
+        handleEVMarkerMove([-8.101552, -114.149182]);
+        $("#task2List").append(
+          "<li data-id='6' data-item-sortable-id='6' draggable='true' role='option' aria-grabbed='false'> <input type='checkbox' id='task2FinishBox' onchange='handleTask2Finish(this)'/> <span class='editableStep'> 2.7. Return camera A2 (macro), camera A3 (wide), and camera A6 (pan) to the tool kit. </span></li>"
+        );
+      }
+
+      // Reacting to checkbox events
+      var triggerSite1 = document.querySelector("input[name=triggerSite1]");
+      var triggerSite2 = document.querySelector("input[name=triggerSite2]");
+      var triggerSite3 = document.querySelector("input[name=triggerSite3]");
+      var triggerZone2Arrival = document.querySelector(
+        "input[name=task2Arrival]"
+      );
+      var triggerSite4 = document.querySelector("input[name=task2Site1]");
+      var triggerSite5 = document.querySelector("input[name=task2Site2]");
+      var triggerSite6 = document.querySelector("input[name=task2Site3]");
+      var task2Finish = document.querySelector("#task2FinishBox");
+
+      triggerSite1.addEventListener("change", function () {
+        if (this.checked) {
+          handleEVMarkerMove([-6.969741, -131.280414]);
+        }
+      });
+
+      triggerSite2.addEventListener("change", function () {
+        if (this.checked) {
+          handleEVMarkerMove([-5.071647, -129.392036]);
+        }
+      });
+
+      triggerSite3.addEventListener("change", function () {
+        if (this.checked) {
+          handleEVMarkerMove([-7.353125, -127.677869]);
+        }
+      });
+
+      triggerZone2Arrival.addEventListener("change", function () {
+        if (this.checked) {
+          handleEVMarkerMove([-8.592472, -122.960228]);
+        }
+      });
+
+      triggerSite4.addEventListener("change", function () {
+        if (this.checked) {
+          handleEVMarkerMove([-8.233568, -121.333947]);
+        }
+      });
+
+      triggerSite5.addEventListener("change", function () {
+        if (this.checked) {
+          handleEVMarkerMove([-9.468947, -120.937325]);
+        }
+      });
+
+      triggerSite6.addEventListener("change", function () {
+        if (this.checked) {
+          handleEVMarkerMove([-7.817305, -117.882552]);
+        }
+      });
+
+      function handleTask2Finish(checkbox) {
+        if (checkbox.checked) {
+          handleEVMarkerMove([-11.71932, -122.178986], 30000);
+
+          var newNoGoZone = L.polygon(
+            [
+              [-12.634067, -123.477799],
+              [-13.754878, -123.145886],
+              [-15.31825, -123.771868],
+              [-15.887392, -125.080563],
+              [-15.537542, -126.139611],
+              [-15.047387, -126.731085],
+              [-14.079876, -127.0559],
+              [-13.048494, -126.803113],
+              [-12.222126, -126.072267],
+              [-12.013053, -124.876353],
+              [-12.220029, -123.892295],
+              [-12.634067, -123.477799],
+            ],
+            {
+              fillColor: "rgba(231, 24, 24, 0.8)",
+              color: "rgba(231, 24, 24, 1)",
+              weight: 2,
+            }
+          );
+
+          var popupContent =
+            "<div style='display: flex; flex-direction: column; justify-content: space-around;'>" +
+            "<h6 style='margin-bottom: 8px'>" +
+            "No Go Zone" +
+            "</h6>" +
+            "<span style='color: rgba(231, 24, 24, 1); margin-top: 4px;'>Dust storm formation spotted" +
+            "</span></div>";
+
+          setTimeout(() => {
+            newNoGoZone.addTo(mymap);
+            newNoGoZone.bindPopup(popupContent, { editable: true }).openPopup();
+          }, 28000);
+        }
+      }
+
+      var zoneALabel = L.divIcon({
+        iconSize: new L.Point(50, 50),
+        html: "<span>Zone A</span>",
+        className: "zone-label",
+      });
+
+      var zoneAMarker = L.marker([-4.828093, -129.455109], {
+        icon: zoneALabel,
+      }).addTo(mymap);
+
+      var zoneBLabel = L.divIcon({
+        iconSize: new L.Point(50, 50),
+        html: "<span>Zone B</span>",
+        className: "zone-label",
+      });
+
+      var zoneBMarker = L.marker([-6.895472, -119.467142], {
+        icon: zoneBLabel,
+      }).addTo(mymap);
+
+      var zoneCLabel = L.divIcon({
+        iconSize: new L.Point(50, 50),
+        html: "<span>Zone C</span>",
+        className: "zone-label",
+      });
+
+      var zoneCMarker = L.marker([-20.591331, -140.484487], {
+        icon: zoneCLabel,
+      }).addTo(mymap);
+
+      mymap.addControl(
+        new L.Control.Compass({
+          autoActive: true,
+        })
+      );
+
+      mymap.on("pm:globaldrawmodetoggled	", (e) => {
+        document.onkeydown = function (evt) {
+          evt = evt || window.event;
+          var isEscape = false;
+          if ("key" in evt) {
+            isEscape = evt.key === "Escape" || evt.key === "Esc";
+          } else {
+            isEscape = evt.keyCode === 27;
+          }
+          if (isEscape) {
+            // alert("Escape");
+            mymap.pm.disableDraw();
+          }
+        };
+      });
+
+      L.control
+        .coordinates({
+          position: "bottomright", //optional default "bootomright"
+          decimals: 0, //optional default 4
+          decimalSeperator: ".", //optional default "."
+          labelTemplateLat: "Lat: {y}", //optional default "Lat: {y}"
+          labelTemplateLng: "Lng: {x}", //optional default "Lng: {x}"
+          enableUserInput: true, //optional default true
+          useLatLngOrder: false, //ordering of labels, default false-> lng-lat
+          labelFormatterLng: function (lng) {
+            return 'Lng: ' + lng.toPrecision(5);
+          }, //optional default none,
+          labelFormatterLat: function (lat) {
+            return 'Lat: ' + lat.toPrecision(5);
+          }, //optional default none
+        })
+        .addTo(mymap);
+    </script>
+  </body>
+</html>

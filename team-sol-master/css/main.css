@@ -1,0 +1,316 @@
+/* body {
+  padding: 0;
+  margin: 0;
+}
+html, body {
+  height: 100%;
+  width: 100vw;
+} */
+
+html {
+  scrollbar-face-color: #646464;
+  scrollbar-base-color: #646464;
+  scrollbar-3dlight-color: #646464;
+  scrollbar-highlight-color: #646464;
+  scrollbar-track-color: #000;
+  scrollbar-arrow-color: #000;
+  scrollbar-shadow-color: #646464;
+  scrollbar-dark-shadow-color: #646464;
+}
+
+::-webkit-scrollbar { width: 8px; height: 3px;}
+::-webkit-scrollbar-button {  background-color: #666; }
+::-webkit-scrollbar-track {  background-color: #646464;}
+::-webkit-scrollbar-track-piece { background-color: #000;}
+::-webkit-scrollbar-thumb { height: 50px; background-color: #666; border-radius: 3px;}
+::-webkit-scrollbar-corner { background-color: #646464;}}
+::-webkit-resizer { background-color: #666;}
+
+body {
+  overflow: hidden;
+  background-color: #262626;
+  color: #fff;
+  font-family: "Rubik", sans-serif;
+}
+
+.holy-grail {
+  min-height: 100vh;
+}
+
+.holy-grail,
+.holy-grail-body {
+	display: flex;
+	flex: 1 1 auto;
+	flex-direction: column;
+}
+
+.mapContainer {
+  flex: 1 1 auto;
+}
+
+@media (min-width: 768px) {
+	/**
+	 * Body items are now side by side
+	 */
+	.holy-grail-body {
+		flex-direction: row;
+	}
+
+	/**
+	 * Sidebars have a basic 260 width
+	 * and are not really flexible anymore
+	 */
+	.hg-sidebar {
+		flex: 0 0 400px;
+	}
+}
+
+/* 
+.mainContent {
+  height: 100%;
+  width: 100%;
+}
+
+.mapContainer {
+  border: 2px solid red;
+} */
+
+.nestedTabs {
+  flex: 1;
+  overflow-y: auto;
+}
+
+#mapid {
+  height: 93vh;
+  width: 100%;
+}
+
+#nav-tab {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #262626;
+  border: none;
+  color: #fff;
+}
+
+.nav-tabs .nav-link {
+  color: #868686;
+  background-color: #201f1e;
+  width: 50%;
+}
+
+/* .nestedTabs {
+  max-height: 80vh;
+  overflow-y: scroll;
+} */
+
+.accordion-body {
+  /* max-height: 50vh; */
+  /* overflow-y: scroll; */
+  scrollbar-color: dark;
+}
+
+.accordion-body-zones {
+  padding: 16px;
+}
+
+.nestedTabTextStyle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#nav-tabContent {
+  background-color: #262626;
+}
+
+.accordion-button {
+  color: #fff;
+}
+
+.accordion-button.collapsed {
+  border-bottom: 1px solid #616161;
+}
+
+.accordion-button::after {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+}
+
+.accordion-button:not(.collapsed)::after {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23FF9900'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>");
+}
+
+.accordion-button:not(.collapsed) {
+  color: #ff9900;
+  background: #262626;
+}
+
+.accordion-button:focus {
+  border-color: #ff9900;
+  box-shadow: none;
+}
+
+.accordionLabel {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  padding-right: 8px;
+  justify-content: space-between;
+}
+
+.sidebarContent {
+  display: flex;
+  height: 95vh;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.consumables {
+  flex: 0 0 75px;
+  margin: 16px 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.consumableCard {
+  text-align: center;
+  padding: 16px;
+}
+
+.consumableCard > h5 {
+  margin-top: 4px;
+  margin-bottom: 4px;
+  color: #31b14d;
+  font-weight: 500;
+}
+
+.consumableCard > p {
+  margin-bottom: 4px;
+  color: lightgray;
+  font-size: 0.9em;
+  font-weight: 200;
+  text-transform: uppercase;
+}
+
+.consumableCard > h6 {
+  margin-top: 8px;
+  margin-bottom: 4px;
+  color: #fff;
+  font-size: 0.95em;
+  font-weight: 500;
+}
+
+.leaflet-touch .leaflet-control-layers,
+.leaflet-touch .leaflet-bar {
+  /* background-color: #262626; */
+  /* color: #fff; */
+  border: none;
+  background-clip: padding-box;
+}
+
+.leaflet-container {
+  font-family: "Rubik", sans-serif;
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+  background-color: #262626;
+  color: #fff;
+  font-size: 1.1em;
+  padding: 8px;
+}
+
+.tooltipClass {
+  background-color: #262626;
+  color: #fff;
+  border: none;
+  padding: 8px;
+}
+
+a.leaflet-popup-remove-button, a.leaflet-popup-edit-button, a.leaflet-popup-input-cancel, a.leaflet-popup-input-save {
+  color: #ff9900;
+}
+
+a.leaflet-popup-remove-button:hover, a.leaflet-popup-edit-button:hover, a.leaflet-popup-input-cancel:hover, a.leaflet-popup-input-save:hover {
+  color: #ff9900;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  top: 4px;
+  right: 8px;
+}
+
+.procedure-step-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 8px;
+  max-height: 50vh;
+  overflow-y: scroll;
+}
+
+.goals-step-list {
+  list-style-type: none;
+  padding-left: 0;
+  margin-top: 8px;
+}
+
+.sub-task-list {
+  list-style-type: none;
+}
+
+.sub-task-list > li {
+  margin-top: 4px;
+  margin-bottom: 4px;
+}
+
+.sub-task-list > li > span {
+  /* border-bottom: 1px dashed gray; */
+  margin-left: 4px;
+}
+
+.timerHeader {
+  display: flex;
+  flex-direction: row;
+  margin-top: 4px;
+  margin-bottom: 0;
+}
+
+.timerButtonContainer {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+  align-content: center;
+}
+
+.timerButtonContainer > *
+{ 
+  width: 40%;
+}
+
+.nav-tabs {
+  border-bottom: none;
+}
+
+input[type=checkbox] {
+  transform: scale(1.5);
+  margin-left: 8px;
+  margin-right: 8px;
+  background-color: #ff9900;
+  transition-duration: 0.3s;
+  cursor: pointer;
+}
+
+input[type=checkbox]:hover {
+  filter: brightness(90%);
+}
+
+.zone-label {
+  background: transparent;
+  color: white;
+  font-size: 14px;
+  width: 100%;
+}
